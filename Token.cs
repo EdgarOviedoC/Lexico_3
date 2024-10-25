@@ -21,7 +21,6 @@ namespace Lexico_3 {
             Asignacion,
             OperadorRelacional, 
             OperadorLogico,
-            Moneda, 
             Cadena
         }
         private String contenido;
