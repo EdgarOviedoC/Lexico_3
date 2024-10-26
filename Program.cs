@@ -7,7 +7,7 @@ namespace Lexico_3 {
     class Program {
         static void Main(string[] args) {
             try {
-                using (Lexico l = new Lexico("prueba.cpp")) {
+                using (Lexico l = new Lexico("Prueba.cpp")) {
                     while (!l.finArchivo()) {
                         l.nexToken();
                     }

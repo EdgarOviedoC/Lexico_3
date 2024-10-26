@@ -12,3 +12,4 @@ C:\Users\hevi-\Desktop\Lenguajes y automatas I\Lexico_3\obj\Debug\net8.0\refint\
 C:\Users\hevi-\Desktop\Lenguajes y automatas I\Lexico_3\obj\Debug\net8.0\Lexico_3.pdb
 C:\Users\hevi-\Desktop\Lenguajes y automatas I\Lexico_3\obj\Debug\net8.0\Lexico_3.genruntimeconfig.cache
 C:\Users\hevi-\Desktop\Lenguajes y automatas I\Lexico_3\obj\Debug\net8.0\ref\Lexico_3.dll
+C:\Users\hevi-\Desktop\Lenguajes y automatas I\Lexico_3\obj\Debug\net8.0\Lexico_3.sourcelink.json
