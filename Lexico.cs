@@ -8,6 +8,9 @@ using System.Runtime.InteropServices;
 using System.Data.Common;
 using System.IO.Compression;
 using Microsoft.VisualBasic;
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml;
 
 namespace Lexico_3 {
     public class Lexico : Token,  IDisposable
@@ -18,7 +21,9 @@ namespace Lexico_3 {
         StreamReader archivo;
         StreamWriter log;
         StreamWriter asm;
-        int[, ] TRAND = {
+        XLWorkbook workbook;
+        IXLWorksheet hoja;
+        int[,] TRAND = {
             {  0,  1,  2, 33,  1, 12, 14,  8,  9, 10, 11, 23, 16, 16, 18, 20, 21, 26, 25, 27, 29, 32, 34,  0,  F, 33  },
             {  F,  1,  1,  F,  1,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
             {  F,  F,  2,  3,  5,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F,  F  },
@@ -63,6 +68,9 @@ namespace Lexico_3 {
         public Lexico() {
             log = new StreamWriter("prueba.log");
             asm = new StreamWriter("prueba.asm");
+            workbook = new XLWorkbook("TRAND.xlsx");
+            hoja = workbook.Worksheet(2);
+
             log.AutoFlush = true;
             asm.AutoFlush = true;
 
@@ -76,6 +84,9 @@ namespace Lexico_3 {
         public Lexico(string nombreArchivo) {
             log = new StreamWriter(Path.ChangeExtension(nombreArchivo,  ".log"));
             log.AutoFlush = true;
+
+            workbook = new XLWorkbook("TRAND.xlsx");
+            hoja = workbook.Worksheet(2);
 
             if (File.Exists(Path.ChangeExtension(nombreArchivo,  ".cpp"))) {
                 archivo = new StreamReader(nombreArchivo);
@@ -102,8 +113,6 @@ namespace Lexico_3 {
         {
             if (c == '\n') {
                 return 23;
-            } else if (finArchivo()) {
-                return 24;
             } else if (char.IsWhiteSpace(c)) {
                 return 0; 
             } else if (char.ToLower(c) == 'e') {
@@ -150,6 +159,8 @@ namespace Lexico_3 {
                 return 21;
             } else if (c == '/') {
                 return 22;
+            } else if (finArchivo()) {
+                return 24;
             }
             return 25;
         }
@@ -215,10 +226,12 @@ namespace Lexico_3 {
                     break;
             }
         }
-        public void nexToken() {
+        public void nexToken(bool matrixTRAND) {
             char c;
             string Buffer = "";
             int estado = 0;
+            string valor;
+            IXLCell celda;
 
             while (estado >= 0) {
 
@@ -228,7 +241,21 @@ namespace Lexico_3 {
                 }
 
                 c = (char)archivo.Peek();
-                estado = TRAND[estado,  columna(c)];
+                if (matrixTRAND) {
+                    estado = TRAND[estado,  columna(c)];
+                    Console.WriteLine("Usando matriz interna");
+                } else {
+                    Console.WriteLine("Usando matriz del exel");
+                    celda = hoja.Cell(estado + 1, columna(c) + 1);
+                    valor = celda.GetValue<String>();
+                    if (valor == "F") {
+                        estado = F;
+                    } else if (valor == "E") {
+                        estado = E;
+                    } else {
+                        estado = int.Parse(valor);
+                    }
+                }
                 clasificacion(estado);
 
                 if (estado >= 0) {
@@ -244,21 +271,22 @@ namespace Lexico_3 {
                 }
             }
             if (estado == E) {
+                String mensaje;
                     if (getClasificacion() == Tipos.Numero) {
-                        throw new Error("Lexico,  se espera un digito",  log,  line);
+                        mensaje ="Lexico, Se espera un digito";
                     } else if (getClasificacion() == Tipos.Cadena) {
-                        throw new Error("Lexico,  se esperaban comillas",  log,  line);
+                        mensaje = "Lexico, Se esperaban comillas";
                     } else if (getClasificacion() == Tipos.Caracter) {
-                        throw new Error("Lexico,  se esperaba una comilla",  log,  line);
+                        mensaje = "Lexico, Se esperaba una comilla";
                     } else {
-                        throw new Error("Se esperaba cierre de comentario",  log,  line);
+                        mensaje = "Lexico, Se esperaba cierre de comentario";
                     }
+                    throw new Error(mensaje, log, line);
                 }
 
-            if (!finArchivo()) {
                 setContenido(Buffer);
                 log.WriteLine("{0}  °°°°  {1}",  getContenido(),  getClasificacion());
-            }
+            
         }
 
         public bool finArchivo() {

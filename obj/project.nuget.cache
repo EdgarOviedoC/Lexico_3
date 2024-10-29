@@ -1,8 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "ciyRaM7etcU=",
+  "dgSpecHash": "tb1o+zR2CIc=",
   "success": true,
   "projectFilePath": "C:\\Users\\hevi-\\Desktop\\Lenguajes y automatas I\\Lexico_3\\Lexico_3.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\hevi-\\.nuget\\packages\\closedxml\\0.104.1\\closedxml.0.104.1.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\closedxml.parser\\1.2.0\\closedxml.parser.1.2.0.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\documentformat.openxml\\3.0.1\\documentformat.openxml.3.0.1.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\documentformat.openxml.framework\\3.0.1\\documentformat.openxml.framework.3.0.1.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\excelnumberformat\\1.1.0\\excelnumberformat.1.1.0.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\rbush\\3.2.0\\rbush.3.2.0.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\sixlabors.fonts\\1.0.0\\sixlabors.fonts.1.0.0.nupkg.sha512",
+    "C:\\Users\\hevi-\\.nuget\\packages\\system.io.packaging\\8.0.0\\system.io.packaging.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
